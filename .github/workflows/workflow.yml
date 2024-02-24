@@ -1,0 +1,28 @@
+name: Run Wick Script with Sudo
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: 'zetamin/Wick'
+          path: 'Wick'
+          
+      - name: Copy contents to root
+        run: |
+          cp -r Wick/* ./
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install urllib3 requests
+      
+      - name: Run script as sudo
+        run: |
+          sudo python3 pkg_iptv_scanner.py
